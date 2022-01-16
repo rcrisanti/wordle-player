@@ -1,21 +1,16 @@
+// use game::Game;
+use player::{strategies, Player};
 use std::collections::{HashMap, HashSet};
 
-use guess::Guess;
-
-mod guess;
+mod game;
+mod player;
 
 fn main() {
-    let state = vec![None, None, None, None, None];
-    let off_limit = HashSet::from(['z', 'q']);
-    let must_include = HashMap::from([('a', vec![0, 2])]);
-    // let off_limit = HashSet::new();
-    // let must_include = HashMap::new();
-    let guess = Guess::new(state, off_limit, must_include);
+    // let state = vec![None, None, None, None, None];
+    // let off_limit = HashSet::from(['z', 'q']);
+    // let must_include = HashMap::from([('a', vec![0, 2])]);
 
-    println!("{}", guess.regex_query());
+    let player = Player::new(3, strategies::random);
 
-    let options = guess.word_options();
-
-    println!("{}", options.len());
-    println!("{:?}", options);
+    println!("{}", player.guess());
 }
