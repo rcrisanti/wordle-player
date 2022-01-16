@@ -2,7 +2,7 @@ use rand::Rng;
 use std::collections::HashSet;
 use std::io;
 
-pub fn user_input(words: HashSet<String>) -> String {
+pub fn user_input(words: &HashSet<String>) -> String {
     let mut guess = String::new();
     println!("Please input your guess:");
     io::stdin()
@@ -23,7 +23,7 @@ pub fn user_input(words: HashSet<String>) -> String {
     }
 }
 
-pub fn random(words: HashSet<String>) -> String {
+pub fn random(words: &HashSet<String>) -> String {
     let mut rng = rand::thread_rng();
     let index = rng.gen_range(0..words.len());
     match words.iter().collect::<Vec<_>>().get(index) {
