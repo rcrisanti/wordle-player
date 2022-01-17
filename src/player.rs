@@ -59,7 +59,7 @@ where
         ))
     }
 
-    fn update_knowledge(&mut self, guess_results: Vec<LetterStatus>) {
+    pub fn update_knowledge(&mut self, guess_results: Vec<LetterStatus>) {
         for (i, letter_status) in guess_results.iter().enumerate() {
             match letter_status {
                 LetterStatus::Correct(l) => {

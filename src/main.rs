@@ -1,4 +1,4 @@
-// use game::Game;
+use game::Game;
 use player::{strategies, Player};
 use std::collections::{HashMap, HashSet};
 
@@ -10,7 +10,9 @@ fn main() {
     // let off_limit = HashSet::from(['z', 'q']);
     // let must_include = HashMap::from([('a', vec![0, 2])]);
 
-    let player = Player::new(3, strategies::random);
+    let player = Player::new(5, strategies::random);
+    let mut game = Game::new(player, "audio", 6);
+    game.play();
 
-    println!("{}", player.guess());
+    // println!("{}", player.guess());
 }
