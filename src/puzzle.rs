@@ -11,7 +11,7 @@ where
     T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
     player: &'a mut Player<T>,
-    answer: &'static str,
+    answer: &'a str,
     n_turns: u8,
     completed_turns: u8,
 }
@@ -20,7 +20,7 @@ impl<'a, T> Puzzle<'a, T>
 where
     T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
-    pub fn new(player: &'a mut Player<T>, answer: &'static str, n_turns: u8) -> Self {
+    pub fn new(player: &'a mut Player<T>, answer: &'a str, n_turns: u8) -> Self {
         player.set_puzzle_rules(n_turns);
         Puzzle {
             player,
