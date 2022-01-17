@@ -180,6 +180,7 @@ fn build_regex_query(
                         }
                     })
                     .collect::<Vec<_>>();
+
                 let local_neg_lookahead = match local_non_chars.len() {
                     0 => "".to_string(),
                     _ => format!("(?![{}])", local_non_chars.join("")),

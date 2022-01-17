@@ -4,6 +4,8 @@ use self::guess_result::{GuessResult, IntermediateLetterInfo, LetterStatus};
 use super::player::Player;
 
 pub mod guess_result;
+
+#[cfg(test)]
 mod tests;
 
 pub struct Puzzle<'a, T>
@@ -56,12 +58,27 @@ where
                 self.answer
                     .chars()
                     .zip(word.chars())
-                    .map(|(a, g)| {
-                        // LetterStatus::Correct
+                    .enumerate()
+                    .map(|(i, (a, g))| {
                         if a == g {
                             LetterStatus::Correct(g)
                         } else if self.answer.contains(g) {
-                            LetterStatus::InDifferentPosition(g)
+                            // check for edge behavior when word has duplicate letters
+                            if letter_occurance_in_word(i, &word)
+                                > count_char_in_word(g, &self.answer)
+                                || guess_letter_correct(
+                                    &word,
+                                    &self.answer,
+                                    self.answer
+                                        .chars()
+                                        .position(|l| l == g)
+                                        .expect("could not find character in answer"),
+                                )
+                            {
+                                LetterStatus::NotInWord(g)
+                            } else {
+                                LetterStatus::InDifferentPosition(g)
+                            }
                         } else {
                             LetterStatus::NotInWord(g)
                         }
@@ -70,4 +87,28 @@ where
             ))
         }
     }
+}
+
+fn guess_letter_correct(guess: &str, answer: &str, idx: usize) -> bool {
+    guess.to_ascii_lowercase().chars().nth(idx) == answer.to_ascii_lowercase().chars().nth(idx)
+}
+
+fn letter_occurance_in_word(idx: usize, word: &str) -> usize {
+    let c = word
+        .to_ascii_lowercase()
+        .chars()
+        .nth(idx)
+        .expect("cannot get search character");
+
+    word.to_ascii_lowercase()
+        .chars()
+        .enumerate()
+        .filter_map(|(i, l)| if i <= idx && l == c { Some(true) } else { None })
+        .count()
+}
+
+fn count_char_in_word(c: char, word: &str) -> usize {
+    word.chars()
+        .filter_map(|l| if l == c { Some(true) } else { None })
+        .count()
 }

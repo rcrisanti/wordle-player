@@ -1,7 +1,7 @@
 use super::*;
 
 #[test]
-fn regex_first_guess() {
+fn first_guess() {
     let state = vec![None, None, None, None, None];
     let off_limit = HashSet::new();
     let must_include = HashMap::new();
@@ -22,7 +22,7 @@ fn regex_first_guess() {
 }
 
 #[test]
-fn regex_off_limits() {
+fn off_limits() {
     let state = vec![None, None, None, None, None];
     let off_limit = HashSet::from(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
     let must_include = HashMap::new();
@@ -50,7 +50,7 @@ fn regex_off_limits() {
 }
 
 #[test]
-fn regex_must_include() {
+fn must_include() {
     let state = vec![None, None, None, None, None];
     let off_limit = HashSet::new();
     let must_include = HashMap::from([('r', vec![]), ('y', vec![])]);
@@ -66,7 +66,7 @@ fn regex_must_include() {
 }
 
 #[test]
-fn regex_heavy_restriction() {
+fn heavy_restriction() {
     let state = vec![None, None, None, None, None];
     let off_limit = HashSet::from(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
     let must_include = HashMap::from([('r', vec![]), ('y', vec![])]);
@@ -85,7 +85,7 @@ fn regex_heavy_restriction() {
 }
 
 #[test]
-fn regex_known_letters() {
+fn known_letters() {
     let state = vec![None, Some('a'), Some('n'), None, Some('y')];
     let off_limit = HashSet::from(['l', 'o', 'e', 'd', 'r', 'i', 'o', 'd', 'l']);
     let must_include = HashMap::from([('a', vec![0, 2]), ('n', vec![3, 4])]);
@@ -102,4 +102,19 @@ fn regex_known_letters() {
     );
     assert!(re.is_match("wanky").unwrap(), "did not match 'wanky'");
     assert!(re.is_match("tangy").unwrap(), "did not match 'tangy'");
+}
+
+#[test]
+fn previous_guess_duplicate_answer_single() {
+    let state = vec![Some('s'), Some('w'), Some('e'), None, Some('t')];
+    let off_limit = HashSet::from(['e']);
+    let must_include = HashMap::new();
+    let regex_exp = build_regex_query(&state, &off_limit, &must_include);
+    let re = Regex::new(&regex_exp).expect("regex expression failed to compile");
+
+    assert!(
+        !re.is_match("sweet").unwrap(),
+        "incorrectly matched 'sweet'"
+    );
+    assert!(re.is_match("swept").unwrap(), "did not match 'swept'");
 }

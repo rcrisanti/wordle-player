@@ -1,6 +1,7 @@
 use colored::Colorize;
 use std::fmt::Display;
 
+#[derive(PartialEq, Debug)]
 pub struct IntermediateLetterInfo(pub Vec<LetterStatus>);
 
 impl Display for IntermediateLetterInfo {
@@ -70,6 +71,7 @@ impl Display for IntermediateLetterInfo {
     }
 }
 
+#[derive(PartialEq, Debug)]
 pub enum GuessResult {
     Win,
     Loss,
@@ -86,7 +88,7 @@ impl Display for GuessResult {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum LetterStatus {
     Correct(char),
     InDifferentPosition(char),

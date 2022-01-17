@@ -8,12 +8,29 @@ mod puzzle;
 #[derive(Parser)]
 #[clap(author = "Ryan Crisanti", version, about, long_about = None)]
 struct Args {
+    #[clap(help = "The answer to the Wordle puzzle")]
     answer: String,
 
-    #[clap(short, long, default_value_t = 6)]
+    #[clap(
+        short,
+        long,
+        default_value_t = 6,
+        help = "The number of turns given to solve the puzzle"
+    )]
     n_turns: u8,
 
-    #[clap(short, long, possible_values=["optimized", "random", "user"], default_value="optimized")]
+    #[clap(
+        short, 
+        long, 
+        possible_values = ["optimized", "random", "user"], 
+        default_value = "optimized", 
+        help = "Which player is solving the puzzle", 
+        long_help = concat!(
+            "The optimized player uses a custom heuristic to pick the best guess. The ",
+            "random player picks a random word from the bag of valid words. The user ",
+            "player allows you to play!"
+        )
+    )]
     player: String,
 }
 
