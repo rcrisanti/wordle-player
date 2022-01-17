@@ -1,18 +1,32 @@
+use colored::Colorize;
 use game::Game;
 use player::{strategies, Player};
-use std::collections::{HashMap, HashSet};
 
 mod game;
 mod player;
 
 fn main() {
-    // let state = vec![None, None, None, None, None];
-    // let off_limit = HashSet::from(['z', 'q']);
-    // let must_include = HashMap::from([('a', vec![0, 2])]);
-
     let player = Player::new(5, strategies::random);
     let mut game = Game::new(player, "audio", 6);
     game.play();
 
-    // println!("{}", player.guess());
+    // let word = vec!["h", "e", "l", "l", "o"];
+    // println!(
+    //     "{}{}{}",
+    //     "hello"
+    //         .to_ascii_uppercase()
+    //         .on_truecolor(181, 159, 58)
+    //         .truecolor(215, 218, 220)
+    //         .bold(),
+    //     "there"
+    //         .to_ascii_uppercase()
+    //         .on_truecolor(83, 141, 78)
+    //         .truecolor(215, 218, 220)
+    //         .bold(),
+    //     "world"
+    //         .to_ascii_uppercase()
+    //         .on_truecolor(58, 58, 60)
+    //         .truecolor(215, 218, 220)
+    //         .bold()
+    // );
 }

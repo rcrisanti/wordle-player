@@ -1,4 +1,4 @@
-use colored::Colorize;
+use colored::{ColoredString, Colorize};
 use std::{collections::HashSet, fmt::Display, num::IntErrorKind};
 
 use super::player::Player;
@@ -70,11 +70,47 @@ where
 
 struct IntermediateLetterInfo(Vec<LetterStatus>);
 
-// impl Display for IntermediateLetterInfo {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         let fmt_places = vec!["{}".to_string(); self.0.len()].join("");
-//     }
-// }
+impl Display for IntermediateLetterInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.0.len() == 5 {
+            let formatted = self.0.iter().map(color_character).collect::<Vec<_>>();
+            write!(
+                f,
+                "{} {} {} {} {}",
+                formatted.get(0).unwrap(),
+                formatted.get(1).unwrap(),
+                formatted.get(2).unwrap(),
+                formatted.get(3).unwrap(),
+                formatted.get(4).unwrap()
+            )
+        } else {
+            write!(f, "{:?}", self.0)
+        }
+    }
+}
+
+fn color_character(ls: &LetterStatus) -> ColoredString {
+    match ls {
+        LetterStatus::Correct(c) => c
+            .to_string()
+            .to_ascii_uppercase()
+            .on_truecolor(83, 141, 78)
+            .truecolor(215, 218, 220)
+            .bold(),
+        LetterStatus::InDifferentPosition(c) => c
+            .to_ascii_uppercase()
+            .to_string()
+            .on_truecolor(181, 159, 58)
+            .truecolor(215, 218, 220)
+            .bold(),
+        LetterStatus::NotInWord(c) => c
+            .to_string()
+            .to_ascii_uppercase()
+            .on_truecolor(58, 58, 60)
+            .truecolor(215, 218, 220)
+            .bold(),
+    }
+}
 
 pub enum GuessResult {
     Win,
@@ -87,7 +123,7 @@ impl Display for GuessResult {
         match &self {
             Self::Win => write!(f, "Win! :)"),
             Self::Loss => write!(f, "Loss :("),
-            Self::Continue(status) => write!(f, "{:?}", status.0),
+            Self::Continue(status) => write!(f, "{}", status),
         }
     }
 }
