@@ -1,11 +1,9 @@
-use colored::Colorize;
-use std::{
-    collections::{HashMap, HashSet},
-    fmt::Display,
-};
+use std::collections::{HashMap, HashSet};
 
+use self::guess_result::{GuessResult, IntermediateLetterInfo, LetterStatus};
 use super::player::Player;
 
+pub mod guess_result;
 mod tests;
 
 pub struct Puzzle<'a, T>
@@ -71,69 +69,5 @@ where
                     .collect::<Vec<_>>(),
             ))
         }
-    }
-}
-
-pub struct IntermediateLetterInfo(Vec<LetterStatus>);
-
-impl Display for IntermediateLetterInfo {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.0.len() == 5 {
-            write!(
-                f,
-                "{} {} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap(),
-                self.0.get(4).unwrap()
-            )
-        } else {
-            write!(f, "{:?}", self.0)
-        }
-    }
-}
-
-pub enum GuessResult {
-    Win,
-    Loss,
-    Continue(IntermediateLetterInfo),
-}
-
-impl Display for GuessResult {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            Self::Win => write!(f, "Win! :)"),
-            Self::Loss => write!(f, "Loss :("),
-            Self::Continue(status) => write!(f, "{}", status),
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum LetterStatus {
-    Correct(char),
-    InDifferentPosition(char),
-    NotInWord(char),
-}
-
-impl Display for LetterStatus {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let formatted = match &self {
-            LetterStatus::Correct(c) => {
-                c.to_string().to_ascii_uppercase().on_truecolor(83, 141, 78)
-            }
-            LetterStatus::InDifferentPosition(c) => c
-                .to_string()
-                .to_ascii_uppercase()
-                .on_truecolor(181, 159, 58),
-            LetterStatus::NotInWord(c) => {
-                c.to_string().to_ascii_uppercase().on_truecolor(58, 58, 60)
-            }
-        }
-        .truecolor(215, 218, 220)
-        .bold();
-
-        write!(f, "{}", formatted)
     }
 }

@@ -1,4 +1,4 @@
-use super::puzzle::LetterStatus;
+use super::puzzle::guess_result::LetterStatus;
 use fancy_regex::Regex;
 use std::{
     collections::{HashMap, HashSet},
