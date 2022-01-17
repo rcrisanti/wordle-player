@@ -6,21 +6,22 @@ use std::{
 
 use super::player::Player;
 
-pub struct Puzzle<T>
+pub struct Puzzle<'a, T>
 where
     T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
-    player: Player<T>,
+    player: &'a mut Player<T>,
     answer: &'static str,
     n_turns: u8,
     completed_turns: u8,
 }
 
-impl<T> Puzzle<T>
+impl<'a, T> Puzzle<'a, T>
 where
     T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
-    pub fn new(player: Player<T>, answer: &'static str, n_turns: u8) -> Self {
+    pub fn new(player: &'a mut Player<T>, answer: &'static str, n_turns: u8) -> Self {
+        player.set_puzzle_rules(n_turns);
         Puzzle {
             player,
             answer,

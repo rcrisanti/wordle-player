@@ -19,7 +19,8 @@ where
     off_limit: HashSet<char>,
     must_include: HashMap<char, Vec<usize>>,
     strategy: T,
-    // cached_words: Option<HashSet<String>>,
+    n_turns: Option<u8>,
+    completed_turns: u8,
 }
 
 impl<T> Player<T>
@@ -32,7 +33,8 @@ where
             off_limit: HashSet::new(),
             must_include: HashMap::new(),
             strategy: strategy,
-            // cached_words: None,
+            n_turns: None,
+            completed_turns: 0,
         }
     }
 
@@ -41,23 +43,36 @@ where
         off_limit: HashSet<char>,
         must_include: HashMap<char, Vec<usize>>,
         strategy: T,
+        n_turns: Option<u8>,
+        completed_turns: u8,
     ) -> Self {
         Player {
             state,
             off_limit,
             must_include,
             strategy,
-            // cached_words: None,
+            n_turns,
+            completed_turns,
         }
     }
 
-    pub fn guess(&self) -> String {
+    pub fn guess(&mut self) -> String {
+        self.completed_turns += 1;
+        let turn_perc = match self.n_turns {
+            Some(n) => self.completed_turns as f32 / n as f32,
+            None => 0.5,
+        };
+
         (self.strategy)(
             &word_options(&self.state, &self.off_limit, &self.must_include),
-            0.5,
+            turn_perc,
             &self.state,
             &HashMap::new(),
         )
+    }
+
+    pub fn set_puzzle_rules(&mut self, n_turns: u8) {
+        self.n_turns = Some(n_turns);
     }
 
     pub fn update_knowledge(&mut self, guess_results: Vec<LetterStatus>) {

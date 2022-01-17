@@ -108,17 +108,23 @@ fn word_letter_commonality_heuristic(
     word_frequency: &f32,
 ) -> f32 {
     let letters_term: f32 = word
+        .to_ascii_lowercase()
         .chars()
         .map(|c| {
             if current_state.contains(&Some(c)) {
                 0f32
             } else {
                 let letter_freq = letter_frequencies.get(&c.to_ascii_lowercase());
+                let n_appearances = word
+                    .to_ascii_lowercase()
+                    .chars()
+                    .filter(|l| l.to_owned() == c)
+                    .count() as f32;
                 if let Some(lf) = letter_freq {
-                    *lf
+                    *lf / n_appearances
                 } else {
                     println!("warning: do not have letter frequency value for '{}'", c);
-                    0.5
+                    0.5 / n_appearances
                 }
             }
         })
