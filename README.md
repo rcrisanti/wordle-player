@@ -1,6 +1,6 @@
 # wordle-player
 
-A bot that can play [Wordle](https://www.powerlanguage.co.uk/wordle/), written completely in Rust.
+A bot that can play [Wordle](https://www.powerlanguage.co.uk/wordle/), written completely in Rust. But the bot is more flexibile than the original game - you can give it a word of any length (and also change the number of turns you allow, depending on how hard you want to make it).
 
 See below for a demo of it in action!
 
