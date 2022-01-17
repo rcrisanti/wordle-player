@@ -1,4 +1,4 @@
-use super::game::LetterStatus;
+use super::puzzle::LetterStatus;
 use fancy_regex::Regex;
 use std::{
     collections::{HashMap, HashSet},
@@ -13,7 +13,7 @@ mod tests;
 
 pub struct Player<T>
 where
-    T: Fn(&HashSet<String>) -> String,
+    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
     state: Vec<Option<char>>,
     off_limit: HashSet<char>,
@@ -24,7 +24,7 @@ where
 
 impl<T> Player<T>
 where
-    T: Fn(&HashSet<String>) -> String,
+    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
     pub fn new(word_len: usize, strategy: T) -> Self {
         Player {
@@ -52,11 +52,12 @@ where
     }
 
     pub fn guess(&self) -> String {
-        (self.strategy)(&word_options(
+        (self.strategy)(
+            &word_options(&self.state, &self.off_limit, &self.must_include),
+            0.5,
             &self.state,
-            &self.off_limit,
-            &self.must_include,
-        ))
+            &HashMap::new(),
+        )
     }
 
     pub fn update_knowledge(&mut self, guess_results: Vec<LetterStatus>) {

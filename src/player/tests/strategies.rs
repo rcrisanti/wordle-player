@@ -1,11 +1,11 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use crate::player::strategies;
 
 #[test]
 fn random_from_list_of_one() {
     let words = HashSet::from(["hello".to_string()]);
-    let guess = strategies::random(&words);
+    let guess = strategies::random(&words, 0., &vec![], &HashMap::new());
     assert_eq!(guess, "hello".to_string());
 }
 
@@ -17,6 +17,6 @@ fn random_is_one_of_choices() {
         "master".to_string(),
         "wordle".to_string(),
     ]);
-    let guess = strategies::random(&words);
+    let guess = strategies::random(&words, 0., &vec![], &HashMap::new());
     assert!(words.contains(&guess));
 }

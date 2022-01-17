@@ -1,11 +1,14 @@
 use colored::{ColoredString, Colorize};
-use std::{collections::HashSet, fmt::Display, num::IntErrorKind};
+use std::{
+    collections::{HashMap, HashSet},
+    fmt::Display,
+};
 
 use super::player::Player;
 
-pub struct Game<T>
+pub struct Puzzle<T>
 where
-    T: Fn(&HashSet<String>) -> String,
+    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
     player: Player<T>,
     answer: &'static str,
@@ -13,12 +16,12 @@ where
     completed_turns: u8,
 }
 
-impl<T> Game<T>
+impl<T> Puzzle<T>
 where
-    T: Fn(&HashSet<String>) -> String,
+    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
 {
     pub fn new(player: Player<T>, answer: &'static str, n_turns: u8) -> Self {
-        Game {
+        Puzzle {
             player,
             answer,
             n_turns,
@@ -26,7 +29,7 @@ where
         }
     }
 
-    pub fn play(&mut self) {
+    pub fn solve(&mut self) {
         loop {
             let guess = self.player.guess();
             println!("Turn {}: guess '{}'", self.completed_turns + 1, guess);
