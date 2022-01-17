@@ -72,7 +72,7 @@ where
     }
 }
 
-struct IntermediateLetterInfo(Vec<LetterStatus>);
+pub struct IntermediateLetterInfo(Vec<LetterStatus>);
 
 impl Display for IntermediateLetterInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

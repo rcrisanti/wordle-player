@@ -38,23 +38,23 @@ where
         }
     }
 
-    pub fn from(
-        state: Vec<Option<char>>,
-        off_limit: HashSet<char>,
-        must_include: HashMap<char, Vec<usize>>,
-        strategy: T,
-        n_turns: Option<u8>,
-        completed_turns: u8,
-    ) -> Self {
-        Player {
-            state,
-            off_limit,
-            must_include,
-            strategy,
-            n_turns,
-            completed_turns,
-        }
-    }
+    // pub fn from(
+    //     state: Vec<Option<char>>,
+    //     off_limit: HashSet<char>,
+    //     must_include: HashMap<char, Vec<usize>>,
+    //     strategy: T,
+    //     n_turns: Option<u8>,
+    //     completed_turns: u8,
+    // ) -> Self {
+    //     Player {
+    //         state,
+    //         off_limit,
+    //         must_include,
+    //         strategy,
+    //         n_turns,
+    //         completed_turns,
+    //     }
+    // }
 
     pub fn guess(&mut self) -> String {
         self.completed_turns += 1;
