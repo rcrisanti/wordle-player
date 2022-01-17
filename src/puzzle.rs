@@ -1,10 +1,12 @@
-use colored::{ColoredString, Colorize};
+use colored::Colorize;
 use std::{
     collections::{HashMap, HashSet},
     fmt::Display,
 };
 
 use super::player::Player;
+
+mod tests;
 
 pub struct Puzzle<'a, T>
 where
@@ -77,42 +79,18 @@ pub struct IntermediateLetterInfo(Vec<LetterStatus>);
 impl Display for IntermediateLetterInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.0.len() == 5 {
-            let formatted = self.0.iter().map(color_character).collect::<Vec<_>>();
             write!(
                 f,
                 "{} {} {} {} {}",
-                formatted.get(0).unwrap(),
-                formatted.get(1).unwrap(),
-                formatted.get(2).unwrap(),
-                formatted.get(3).unwrap(),
-                formatted.get(4).unwrap()
+                self.0.get(0).unwrap(),
+                self.0.get(1).unwrap(),
+                self.0.get(2).unwrap(),
+                self.0.get(3).unwrap(),
+                self.0.get(4).unwrap()
             )
         } else {
             write!(f, "{:?}", self.0)
         }
-    }
-}
-
-fn color_character(ls: &LetterStatus) -> ColoredString {
-    match ls {
-        LetterStatus::Correct(c) => c
-            .to_string()
-            .to_ascii_uppercase()
-            .on_truecolor(83, 141, 78)
-            .truecolor(215, 218, 220)
-            .bold(),
-        LetterStatus::InDifferentPosition(c) => c
-            .to_ascii_uppercase()
-            .to_string()
-            .on_truecolor(181, 159, 58)
-            .truecolor(215, 218, 220)
-            .bold(),
-        LetterStatus::NotInWord(c) => c
-            .to_string()
-            .to_ascii_uppercase()
-            .on_truecolor(58, 58, 60)
-            .truecolor(215, 218, 220)
-            .bold(),
     }
 }
 
@@ -141,12 +119,21 @@ pub enum LetterStatus {
 
 impl Display for LetterStatus {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            LetterStatus::Correct(l) => write!(f, "{}", l.to_string().white().on_green()),
-            LetterStatus::InDifferentPosition(l) => {
-                write!(f, "{}", l.to_string().white().on_yellow())
+        let formatted = match &self {
+            LetterStatus::Correct(c) => {
+                c.to_string().to_ascii_uppercase().on_truecolor(83, 141, 78)
             }
-            LetterStatus::NotInWord(l) => write!(f, "{}", l.to_string().white().on_bright_black()),
+            LetterStatus::InDifferentPosition(c) => c
+                .to_string()
+                .to_ascii_uppercase()
+                .on_truecolor(181, 159, 58),
+            LetterStatus::NotInWord(c) => {
+                c.to_string().to_ascii_uppercase().on_truecolor(58, 58, 60)
+            }
         }
+        .truecolor(215, 218, 220)
+        .bold();
+
+        write!(f, "{}", formatted)
     }
 }
