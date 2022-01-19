@@ -14,6 +14,7 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | ---------- | ----- | ------------------ | ----- | ------- |
 | 2022-01-17 | shire | :white_check_mark: |   4   |  0.1.0  |
 | 2022-01-18 | proxy | :white_check_mark: |   5   |  0.1.0  |
+| 2022-01-19 | point | :white_check_mark: |   3   |  0.1.0  |
 
 ## Sources
 Currently, the bot uses static text files as its dictionary & to know how frequent letters occur in the English language. Here are the sources of those files:
