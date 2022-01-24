@@ -24,3 +24,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-01-21 | prick | :white_check_mark: |   6   |  0.1.0  |
 | 2022-01-22 | wince | :white_check_mark: |   6   |  0.1.0  |
 | 2022-01-23 | crimp | :white_check_mark: |   3   |  0.1.0  |
+| 2022-01-24 | knoll | :white_check_mark: |   4   |  0.1.0  |
