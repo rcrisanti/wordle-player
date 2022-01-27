@@ -27,3 +27,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-01-24 | knoll | :white_check_mark: |   4   |  0.1.0  |
 | 2022-01-25 | sugar | :white_check_mark: |   4   |  0.1.0  |
 | 2022-01-26 | whack | :white_check_mark: |   5   |  0.1.0  |
+| 2022-01-27 | mount | :white_check_mark: |   3   |  0.1.0  |
