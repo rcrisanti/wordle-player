@@ -141,7 +141,13 @@ fn build_regex_query(
         _ => Some(
             off_limit
                 .iter()
-                .map(|c| format!("{}{}", c.to_ascii_lowercase(), c.to_ascii_uppercase()))
+                .map(|c| {
+                    if must_include.contains_key(&c) {
+                        "".to_string()
+                    } else {
+                        format!("{}{}", c.to_ascii_lowercase(), c.to_ascii_uppercase())
+                    }
+                })
                 .collect::<String>(),
         ),
     };
