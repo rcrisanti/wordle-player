@@ -75,9 +75,6 @@ pub fn word_letter_commonality(
 
     words
         .iter()
-        // .max_by_key(|word| {
-        //     word_letter_commonality_heuristic(word, lambda, current_state, letter_freqs, 0.5)
-        // })
         .max_by(|a, b| {
             let heuristic_a = word_letter_commonality_heuristic(
                 a,

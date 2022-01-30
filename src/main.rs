@@ -4,6 +4,7 @@ use puzzle::Puzzle;
 
 mod player;
 mod puzzle;
+mod errors;
 
 #[derive(Parser)]
 #[clap(author = "Ryan Crisanti", version, about, long_about = None)]
@@ -47,5 +48,9 @@ fn main() {
         },
     );
     let mut puzzle = Puzzle::new(&mut player, &answer, args.n_turns);
-    puzzle.solve();
+    let solved = puzzle.solve();
+
+    if let Err(err) = solved {
+        eprintln!("\"{}\" {}", answer, err);
+    }
 }

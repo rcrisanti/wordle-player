@@ -1,4 +1,5 @@
 use super::puzzle::guess_result::LetterStatus;
+use crate::errors::ImpossiblePuzzleError;
 use fancy_regex::Regex;
 use std::{
     collections::{HashMap, HashSet},
@@ -32,7 +33,7 @@ where
             state: vec![None; word_len],
             off_limit: HashSet::new(),
             must_include: HashMap::new(),
-            strategy: strategy,
+            strategy,
             n_turns: None,
             completed_turns: 0,
         }
@@ -56,19 +57,24 @@ where
     //     }
     // }
 
-    pub fn guess(&mut self) -> String {
+    pub fn guess(&mut self) -> Result<String, ImpossiblePuzzleError> {
         self.completed_turns += 1;
         let turn_perc = match self.n_turns {
             Some(n) => self.completed_turns as f32 / n as f32,
             None => 0.5,
         };
 
-        (self.strategy)(
-            &word_options(&self.state, &self.off_limit, &self.must_include),
-            turn_perc,
-            &self.state,
-            &HashMap::new(),
-        )
+        let words = word_options(&self.state, &self.off_limit, &self.must_include);
+
+        match words.len() {
+            0 => Err(ImpossiblePuzzleError {}),
+            _ => Ok((self.strategy)(
+                &words,
+                turn_perc,
+                &self.state,
+                &HashMap::new(),
+            )),
+        }
     }
 
     pub fn set_puzzle_rules(&mut self, n_turns: u8) {

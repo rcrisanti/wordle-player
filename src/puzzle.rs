@@ -2,6 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use self::guess_result::{GuessResult, IntermediateLetterInfo, LetterStatus};
 use super::player::Player;
+use crate::errors::ImpossiblePuzzleError;
 
 pub mod guess_result;
 
@@ -32,16 +33,17 @@ where
         }
     }
 
-    pub fn solve(&mut self) {
+    pub fn solve(&mut self) -> Result<GuessResult, ImpossiblePuzzleError> {
         loop {
-            let guess = self.player.guess();
+            let guess = self.player.guess()?;
+
             println!("Turn {}: guess '{}'", self.completed_turns + 1, guess);
             let turn_res = self.turn(guess);
             println!("\t{}", turn_res);
             if let GuessResult::Continue(new_info) = turn_res {
                 self.player.update_knowledge(new_info.0);
             } else {
-                break;
+                return Ok(turn_res);
             }
         }
     }
@@ -50,7 +52,7 @@ where
         self.completed_turns += 1;
 
         if word.to_ascii_lowercase() == self.answer.to_ascii_lowercase() {
-            GuessResult::Win
+            GuessResult::Win(self.completed_turns)
         } else if self.completed_turns >= self.n_turns {
             GuessResult::Loss
         } else {
