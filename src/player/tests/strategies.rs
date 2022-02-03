@@ -45,7 +45,7 @@ fn heuristic_better_than_random() {
                 let solved = puzzle.solve();
                 match solved {
                     Ok(res) => match res {
-                        GuessResult::Win(n_turns) => n_turns as f64,
+                        GuessResult::Win(_, n_turns) => n_turns as f64,
                         _ => panic!(
                             "random solver could not guess '{}' in {} turns",
                             answer, max_n_turns
@@ -67,7 +67,7 @@ fn heuristic_better_than_random() {
                 let solved = puzzle.solve();
                 match solved {
                     Ok(res) => match res {
-                        GuessResult::Win(n_turns) => n_turns as f64,
+                        GuessResult::Win(_, n_turns) => n_turns as f64,
                         _ => panic!(
                             "heuristic solver could not guess '{}' in {} turns",
                             answer, max_n_turns

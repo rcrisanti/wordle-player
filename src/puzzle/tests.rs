@@ -26,7 +26,14 @@ fn out_of_turns_loses() {
     let mut player = Player::new(4, strategies::user_input);
     let mut puzzle = Puzzle::new(&mut player, "easy", 1);
 
-    assert_eq!(puzzle.turn("hard".to_string()), GuessResult::Loss);
+    let expected_result = GuessResult::Loss(IntermediateLetterInfo(vec![
+        LetterStatus::NotInWord('h'),
+        LetterStatus::Correct('a'),
+        LetterStatus::NotInWord('r'),
+        LetterStatus::NotInWord('d'),
+    ]));
+
+    assert_eq!(puzzle.turn("hard".to_string()), expected_result);
 }
 
 #[test]
