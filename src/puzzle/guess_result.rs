@@ -98,18 +98,13 @@ pub enum LetterStatus {
 impl Display for LetterStatus {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let formatted = match &self {
-            LetterStatus::Correct(c) => {
-                c.to_string().to_ascii_uppercase().on_truecolor(83, 141, 78)
+            LetterStatus::Correct(c) => format!(" {} ", c).to_ascii_uppercase().on_green(),
+            LetterStatus::InDifferentPosition(c) => {
+                format!(" {} ", c).to_ascii_uppercase().on_yellow()
             }
-            LetterStatus::InDifferentPosition(c) => c
-                .to_string()
-                .to_ascii_uppercase()
-                .on_truecolor(181, 159, 58),
-            LetterStatus::NotInWord(c) => {
-                c.to_string().to_ascii_uppercase().on_truecolor(58, 58, 60)
-            }
+            LetterStatus::NotInWord(c) => format!(" {} ", c).to_ascii_uppercase().on_bright_black(),
         }
-        .truecolor(215, 218, 220)
+        .bright_white()
         .bold();
 
         write!(f, "{}", formatted)
