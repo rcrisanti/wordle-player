@@ -51,42 +51,43 @@ where
     fn turn(&mut self, word: String) -> GuessResult {
         self.completed_turns += 1;
 
-        if word.to_ascii_lowercase() == self.answer.to_ascii_lowercase() {
-            GuessResult::Win(self.completed_turns)
-        } else if self.completed_turns >= self.n_turns {
-            GuessResult::Loss
-        } else {
-            GuessResult::Continue(IntermediateLetterInfo(
-                self.answer
-                    .chars()
-                    .zip(word.chars())
-                    .enumerate()
-                    .map(|(i, (a, g))| {
-                        if a == g {
-                            LetterStatus::Correct(g)
-                        } else if self.answer.contains(g) {
-                            // check for edge behavior when word has duplicate letters
-                            if letter_occurance_in_word(i, &word)
-                                > count_char_in_word(g, &self.answer)
-                                || guess_letter_correct(
-                                    &word,
-                                    &self.answer,
-                                    self.answer
-                                        .chars()
-                                        .position(|l| l == g)
-                                        .expect("could not find character in answer"),
-                                )
-                            {
-                                LetterStatus::NotInWord(g)
-                            } else {
-                                LetterStatus::InDifferentPosition(g)
-                            }
-                        } else {
+        let letter_status = IntermediateLetterInfo(
+            self.answer
+                .chars()
+                .zip(word.chars())
+                .enumerate()
+                .map(|(i, (a, g))| {
+                    if a == g {
+                        LetterStatus::Correct(g)
+                    } else if self.answer.contains(g) {
+                        // check for edge behavior when word has duplicate letters
+                        if letter_occurance_in_word(i, &word) > count_char_in_word(g, &self.answer)
+                            || guess_letter_correct(
+                                &word,
+                                &self.answer,
+                                self.answer
+                                    .chars()
+                                    .position(|l| l == g)
+                                    .expect("could not find character in answer"),
+                            )
+                        {
                             LetterStatus::NotInWord(g)
+                        } else {
+                            LetterStatus::InDifferentPosition(g)
                         }
-                    })
-                    .collect::<Vec<_>>(),
-            ))
+                    } else {
+                        LetterStatus::NotInWord(g)
+                    }
+                })
+                .collect::<Vec<_>>(),
+        );
+
+        if word.to_ascii_lowercase() == self.answer.to_ascii_lowercase() {
+            GuessResult::Win(letter_status, self.completed_turns)
+        } else if self.completed_turns >= self.n_turns {
+            GuessResult::Loss(letter_status)
+        } else {
+            GuessResult::Continue(letter_status)
         }
     }
 }
