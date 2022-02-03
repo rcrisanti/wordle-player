@@ -7,9 +7,18 @@ fn correct_answer_wins() {
     let mut player = Player::new(4, strategies::user_input);
     let mut puzzle = Puzzle::new(&mut player, "easy", 5);
 
-    assert_eq!(puzzle.turn("easy".to_string()), GuessResult::Win);
-    assert_eq!(puzzle.turn("EASY".to_string()), GuessResult::Win);
-    assert_eq!(puzzle.turn("eAsY".to_string()), GuessResult::Win);
+    assert!(matches!(
+        puzzle.turn("easy".to_string()),
+        GuessResult::Win { .. }
+    ));
+    assert!(matches!(
+        puzzle.turn("EASY".to_string()),
+        GuessResult::Win { .. }
+    ));
+    assert!(matches!(
+        puzzle.turn("eAsY".to_string()),
+        GuessResult::Win { .. }
+    ));
 }
 
 #[test]

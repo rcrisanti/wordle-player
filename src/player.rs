@@ -1,10 +1,7 @@
 use super::puzzle::guess_result::LetterStatus;
+use crate::errors::ImpossiblePuzzleError;
 use fancy_regex::Regex;
-use std::{
-    collections::{HashMap, HashSet},
-    fs::File,
-    io::{BufRead, BufReader},
-};
+use std::collections::{HashMap, HashSet};
 
 pub mod strategies;
 
@@ -32,7 +29,7 @@ where
             state: vec![None; word_len],
             off_limit: HashSet::new(),
             must_include: HashMap::new(),
-            strategy: strategy,
+            strategy,
             n_turns: None,
             completed_turns: 0,
         }
@@ -56,19 +53,24 @@ where
     //     }
     // }
 
-    pub fn guess(&mut self) -> String {
+    pub fn guess(&mut self) -> Result<String, ImpossiblePuzzleError> {
         self.completed_turns += 1;
         let turn_perc = match self.n_turns {
             Some(n) => self.completed_turns as f32 / n as f32,
             None => 0.5,
         };
 
-        (self.strategy)(
-            &word_options(&self.state, &self.off_limit, &self.must_include),
-            turn_perc,
-            &self.state,
-            &HashMap::new(),
-        )
+        let words = word_options(&self.state, &self.off_limit, &self.must_include);
+
+        match words.len() {
+            0 => Err(ImpossiblePuzzleError {}),
+            _ => Ok((self.strategy)(
+                &words,
+                turn_perc,
+                &self.state,
+                &HashMap::new(),
+            )),
+        }
     }
 
     pub fn set_puzzle_rules(&mut self, n_turns: u8) {
@@ -105,19 +107,18 @@ fn word_options(
     off_limit: &HashSet<char>,
     must_include: &HashMap<char, Vec<usize>>,
 ) -> HashSet<String> {
-    // for now using a static file
-    let word_db = File::open("word-database.txt").expect("could not open word database file");
-    let lines = BufReader::new(word_db).lines();
+    // for now using a static file (read this way so that file is included in compiled executable)
+    let words_bytes = include_bytes!("../word-database.txt");
+    let file = String::from_utf8_lossy(words_bytes);
+    let lines = file.split("\n").map(|w| w.to_string());
 
     let regex_query = build_regex_query(state, off_limit, must_include);
     let re = Regex::new(&regex_query).expect("regex expression failed to compile");
 
     lines
-        .filter_map(|line| {
-            if let Ok(word) = line {
-                if re.is_match(&word).unwrap() {
-                    return Some(word);
-                }
+        .filter_map(|word| {
+            if re.is_match(&word).unwrap() {
+                return Some(word);
             }
             None
         })
@@ -135,7 +136,13 @@ fn build_regex_query(
         _ => Some(
             off_limit
                 .iter()
-                .map(|c| format!("{}{}", c.to_ascii_lowercase(), c.to_ascii_uppercase()))
+                .map(|c| {
+                    if must_include.contains_key(&c) {
+                        "".to_string()
+                    } else {
+                        format!("{}{}", c.to_ascii_lowercase(), c.to_ascii_uppercase())
+                    }
+                })
                 .collect::<String>(),
         ),
     };
