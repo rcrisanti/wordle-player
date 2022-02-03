@@ -1,7 +1,6 @@
 use rand::Rng;
 use std::cmp::Ordering::Equal;
 use std::collections::{HashMap, HashSet};
-use std::fs::File;
 use std::io;
 
 pub fn user_input(
@@ -53,22 +52,21 @@ pub fn word_letter_commonality(
     let lambda_min = 0.2;
     let lambda = lambda_min + (1. - lambda_min) * turn_perc;
 
-    let file =
-        File::open("letter-frequencies.txt").expect("could not open letter frequencies file");
-    let mut rdr = csv::Reader::from_reader(file);
-
-    let letter_freqs = rdr
-        .records()
-        .map(|r| {
-            let row = r.expect("could not read row");
+    let letter_frequencies_bytes = include_bytes!("../../letter-frequencies.txt");
+    let file = String::from_utf8_lossy(letter_frequencies_bytes);
+    let letter_freqs = file
+        .split("\n")
+        .map(|line| {
+            let (letter, freq) = line.split_at(line.find(',').expect("did not finc comma in line"));
             (
-                *row[0]
+                letter
                     .to_ascii_lowercase()
                     .chars()
-                    .collect::<Vec<_>>()
-                    .get(0)
-                    .expect("no letters in row"),
-                row[1].parse::<f32>().expect("unable to parse to a number"),
+                    .next()
+                    .expect("not at least 1 character in first column of letter freqs"),
+                freq[1..]
+                    .parse::<f32>()
+                    .expect("could not parse letter freq"),
             )
         })
         .collect::<HashMap<_, _>>();
