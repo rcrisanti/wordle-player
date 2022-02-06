@@ -36,3 +36,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-02 | moist | :white_check_mark: |   4   |   0.1   |
 | 2022-02-03 | shard | :white_check_mark: |   4   |   0.1   |
 | 2022-02-04 | pleat | :white_check_mark: |   5   |   0.1   |
+| 2022-02-05 | aloft | :white_check_mark: |   4   |   0.1   |
