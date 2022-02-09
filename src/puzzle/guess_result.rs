@@ -6,68 +6,14 @@ pub struct IntermediateLetterInfo(pub Vec<LetterStatus>);
 
 impl Display for IntermediateLetterInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self.0.len() {
-            1 => write!(f, "{}", self.0.get(0).unwrap()),
-            2 => write!(f, "{} {}", self.0.get(0).unwrap(), self.0.get(1).unwrap()),
-            3 => write!(
+        write!(
                 f,
-                "{} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap()
-            ),
-            4 => write!(
-                f,
-                "{} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap()
-            ),
-            5 => write!(
-                f,
-                "{} {} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap(),
-                self.0.get(4).unwrap()
-            ),
-            6 => write!(
-                f,
-                "{} {} {} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap(),
-                self.0.get(4).unwrap(),
-                self.0.get(5).unwrap()
-            ),
-            7 => write!(
-                f,
-                "{} {} {} {} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap(),
-                self.0.get(4).unwrap(),
-                self.0.get(5).unwrap(),
-                self.0.get(6).unwrap()
-            ),
-            8 => write!(
-                f,
-                "{} {} {} {} {} {} {} {}",
-                self.0.get(0).unwrap(),
-                self.0.get(1).unwrap(),
-                self.0.get(2).unwrap(),
-                self.0.get(3).unwrap(),
-                self.0.get(4).unwrap(),
-                self.0.get(5).unwrap(),
-                self.0.get(6).unwrap(),
-                self.0.get(7).unwrap()
-            ),
-            _ => write!(f, "{:?}", self.0),
-        }
+            "{}",
+            self.0
+                .iter()
+                .map(|l| { format!("{}", l) })
+                .collect::<String>()
+        )
     }
 }
 
