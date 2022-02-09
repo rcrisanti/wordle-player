@@ -1,10 +1,10 @@
-use crate::player::strategies;
+use crate::player::strategies::UserInputStrategy;
 
 use super::*;
 
 #[test]
 fn correct_answer_wins() {
-    let mut player = Player::new(4, strategies::user_input);
+    let mut player = Player::new(4, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "easy", 5);
 
     assert!(matches!(
@@ -23,7 +23,7 @@ fn correct_answer_wins() {
 
 #[test]
 fn out_of_turns_loses() {
-    let mut player = Player::new(4, strategies::user_input);
+    let mut player = Player::new(4, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "easy", 1);
 
     let expected_result = GuessResult::Loss(IntermediateLetterInfo(vec![
@@ -38,7 +38,7 @@ fn out_of_turns_loses() {
 
 #[test]
 fn intermediate_info_correct() {
-    let mut player = Player::new(4, strategies::user_input);
+    let mut player = Player::new(4, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "easy", 5);
 
     assert_eq!(
@@ -54,7 +54,7 @@ fn intermediate_info_correct() {
 
 #[test]
 fn intermediate_info_correct_answer_duplicate_letters_first_right() {
-    let mut player = Player::new(5, strategies::user_input);
+    let mut player = Player::new(5, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "sweet", 5);
 
     assert_eq!(
@@ -71,7 +71,7 @@ fn intermediate_info_correct_answer_duplicate_letters_first_right() {
 
 #[test]
 fn inter_info_correct_answer_duplicate_letters_first_wrong() {
-    let mut player = Player::new(5, strategies::user_input);
+    let mut player = Player::new(5, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "aalii", 5);
 
     assert_eq!(
@@ -88,7 +88,7 @@ fn inter_info_correct_answer_duplicate_letters_first_wrong() {
 
 #[test]
 fn inter_info_correct_guess_duplicate_letters() {
-    let mut player = Player::new(5, strategies::user_input);
+    let mut player = Player::new(5, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "swept", 5);
 
     assert_eq!(

@@ -1,5 +1,6 @@
 use clap::Parser;
-use player::{strategies, Player};
+use player::strategies::{LetterFrequencyStrategy, RandomStrategy, UserInputStrategy};
+use player::Player;
 use puzzle::Puzzle;
 
 mod player;
@@ -23,16 +24,17 @@ struct Args {
     #[clap(
         short, 
         long, 
-        possible_values = ["optimized", "random", "user"], 
-        default_value = "optimized", 
+        possible_values = ["letter-freq", "random", "user"], 
+        default_value = "letter-freq", 
         help = "Which player is solving the puzzle", 
         long_help = concat!(
-            "The optimized player uses a custom heuristic to pick the best guess. The ",
-            "random player picks a random word from the bag of valid words. The user ",
-            "player allows you to play!"
+            "The letter-freq strategy uses a heuristic based on the frequency of each ",
+            "letter in the English language to pick the best guess. The random ",
+            "strategy picks a random word from the bag of valid words. The user ",
+            "strategy allows you to play!"
         )
     )]
-    player: String,
+    strategy: String,
 }
 
 fn main() {
@@ -41,10 +43,10 @@ fn main() {
 
     let mut player = Player::new(
         answer.len(),
-        match &args.player.as_str() {
-            &"random" => strategies::random,
-            &"user" => strategies::user_input,
-            _ => strategies::word_letter_commonality,
+        match &args.strategy.as_str() {
+            &"random" => Box::new(RandomStrategy::new()),
+            &"user" => Box::new(UserInputStrategy::new()),
+            _ => Box::new(LetterFrequencyStrategy::new()),
         },
     );
     let mut puzzle = Puzzle::new(&mut player, &answer, args.n_turns);

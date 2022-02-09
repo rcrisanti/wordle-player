@@ -1,15 +1,19 @@
 use statrs::statistics::{Data, Distribution, OrderStatistics};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use crate::{
-    player::{strategies, Player},
+    player::{
+        strategies::{LetterFrequencyStrategy, RandomStrategy, Strategy},
+        Player,
+    },
     puzzle::{guess_result::GuessResult, Puzzle},
 };
 
 #[test]
 fn random_from_list_of_one() {
     let words = HashSet::from(["hello".to_string()]);
-    let guess = strategies::random(&words, 0., &vec![], &HashMap::new());
+    let strategy = RandomStrategy::new();
+    let guess = strategy.best_word(&words, &vec![]);
     assert_eq!(guess, "hello".to_string());
 }
 
@@ -21,7 +25,8 @@ fn random_is_one_of_choices() {
         "master".to_string(),
         "wordle".to_string(),
     ]);
-    let guess = strategies::random(&words, 0., &vec![], &HashMap::new());
+    let strategy = RandomStrategy::new();
+    let guess = strategy.best_word(&words, &vec![]);
     assert!(words.contains(&guess));
 }
 
@@ -40,7 +45,7 @@ fn heuristic_better_than_random() {
         words
             .iter()
             .map(|answer| {
-                let mut random_player = Player::new(word_length, strategies::random);
+                let mut random_player = Player::new(word_length, Box::new(RandomStrategy::new()));
                 let mut puzzle = Puzzle::new(&mut random_player, &answer, max_n_turns);
                 let solved = puzzle.solve();
                 match solved {
@@ -62,7 +67,7 @@ fn heuristic_better_than_random() {
             .iter()
             .map(|answer| {
                 let mut heuristic_player =
-                    Player::new(word_length, strategies::word_letter_commonality);
+                    Player::new(word_length, Box::new(LetterFrequencyStrategy::new()));
                 let mut puzzle = Puzzle::new(&mut heuristic_player, &answer, max_n_turns);
                 let solved = puzzle.solve();
                 match solved {

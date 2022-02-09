@@ -1,5 +1,3 @@
-use std::collections::{HashMap, HashSet};
-
 use self::guess_result::{GuessResult, IntermediateLetterInfo, LetterStatus};
 use super::player::Player;
 use crate::errors::ImpossiblePuzzleError;
@@ -9,21 +7,15 @@ pub mod guess_result;
 #[cfg(test)]
 mod tests;
 
-pub struct Puzzle<'a, T>
-where
-    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
-{
-    player: &'a mut Player<T>,
+pub struct Puzzle<'a> {
+    player: &'a mut Player,
     answer: &'a str,
     n_turns: u8,
     completed_turns: u8,
 }
 
-impl<'a, T> Puzzle<'a, T>
-where
-    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
-{
-    pub fn new(player: &'a mut Player<T>, answer: &'a str, n_turns: u8) -> Self {
+impl<'a> Puzzle<'a> {
+    pub fn new(player: &'a mut Player, answer: &'a str, n_turns: u8) -> Self {
         player.set_puzzle_rules(n_turns);
         Puzzle {
             player,

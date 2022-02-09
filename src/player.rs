@@ -2,29 +2,24 @@ use super::puzzle::guess_result::LetterStatus;
 use crate::errors::ImpossiblePuzzleError;
 use fancy_regex::Regex;
 use std::collections::{HashMap, HashSet};
+use strategies::Strategy;
 
 pub mod strategies;
 
 #[cfg(test)]
 mod tests;
 
-pub struct Player<T>
-where
-    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
-{
+pub struct Player {
     state: Vec<Option<char>>,
     off_limit: HashSet<char>,
     must_include: HashMap<char, Vec<usize>>,
-    strategy: T,
+    strategy: Box<dyn Strategy>,
     n_turns: Option<u8>,
     completed_turns: u8,
 }
 
-impl<T> Player<T>
-where
-    T: Fn(&HashSet<String>, f32, &Vec<Option<char>>, &HashMap<String, f32>) -> String,
-{
-    pub fn new(word_len: usize, strategy: T) -> Self {
+impl Player {
+    pub fn new(word_len: usize, strategy: Box<dyn Strategy>) -> Self {
         Player {
             state: vec![None; word_len],
             off_limit: HashSet::new(),
@@ -35,41 +30,14 @@ where
         }
     }
 
-    // pub fn from(
-    //     state: Vec<Option<char>>,
-    //     off_limit: HashSet<char>,
-    //     must_include: HashMap<char, Vec<usize>>,
-    //     strategy: T,
-    //     n_turns: Option<u8>,
-    //     completed_turns: u8,
-    // ) -> Self {
-    //     Player {
-    //         state,
-    //         off_limit,
-    //         must_include,
-    //         strategy,
-    //         n_turns,
-    //         completed_turns,
-    //     }
-    // }
-
     pub fn guess(&mut self) -> Result<String, ImpossiblePuzzleError> {
         self.completed_turns += 1;
-        let turn_perc = match self.n_turns {
-            Some(n) => self.completed_turns as f32 / n as f32,
-            None => 0.5,
-        };
 
         let words = word_options(&self.state, &self.off_limit, &self.must_include);
 
         match words.len() {
             0 => Err(ImpossiblePuzzleError {}),
-            _ => Ok((self.strategy)(
-                &words,
-                turn_perc,
-                &self.state,
-                &HashMap::new(),
-            )),
+            _ => Ok(self.strategy.best_word(&words, &self.state)),
         }
     }
 
