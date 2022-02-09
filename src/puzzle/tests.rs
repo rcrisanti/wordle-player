@@ -27,10 +27,10 @@ fn out_of_turns_loses() {
     let mut puzzle = Puzzle::new(&mut player, "easy", 1);
 
     let expected_result = GuessResult::Loss(IntermediateLetterInfo(vec![
-        LetterStatus::NotInWord('h'),
+        LetterStatus::Incorrect('h'),
         LetterStatus::Correct('a'),
-        LetterStatus::NotInWord('r'),
-        LetterStatus::NotInWord('d'),
+        LetterStatus::Incorrect('r'),
+        LetterStatus::Incorrect('d'),
     ]));
 
     assert_eq!(puzzle.turn("hard".to_string()), expected_result);
@@ -47,7 +47,7 @@ fn intermediate_info_correct() {
             LetterStatus::Correct('e'),
             LetterStatus::Correct('a'),
             LetterStatus::Correct('s'),
-            LetterStatus::NotInWord('t')
+            LetterStatus::Incorrect('t')
         ]))
     );
 }
@@ -63,7 +63,7 @@ fn intermediate_info_correct_answer_duplicate_letters_first_right() {
             LetterStatus::Correct('s'),
             LetterStatus::Correct('w'),
             LetterStatus::Correct('e'),
-            LetterStatus::NotInWord('p'),
+            LetterStatus::Incorrect('p'),
             LetterStatus::Correct('t')
         ]))
     );
@@ -78,10 +78,10 @@ fn inter_info_correct_answer_duplicate_letters_first_wrong() {
         puzzle.turn("allis".to_string()),
         GuessResult::Continue(IntermediateLetterInfo(vec![
             LetterStatus::Correct('a'),
-            LetterStatus::NotInWord('l'),
+            LetterStatus::Incorrect('l'),
             LetterStatus::Correct('l'),
             LetterStatus::Correct('i'),
-            LetterStatus::NotInWord('s')
+            LetterStatus::Incorrect('s')
         ]))
     );
 }
@@ -97,7 +97,7 @@ fn inter_info_correct_guess_duplicate_letters() {
             LetterStatus::Correct('s'),
             LetterStatus::Correct('w'),
             LetterStatus::Correct('e'),
-            LetterStatus::NotInWord('e'),
+            LetterStatus::Incorrect('e'),
             LetterStatus::Correct('t')
         ]))
     );

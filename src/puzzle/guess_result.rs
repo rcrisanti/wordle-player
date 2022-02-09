@@ -7,7 +7,7 @@ pub struct IntermediateLetterInfo(pub Vec<LetterStatus>);
 impl Display for IntermediateLetterInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
-                f,
+            f,
             "{}",
             self.0
                 .iter()
@@ -37,18 +37,16 @@ impl Display for GuessResult {
 #[derive(Debug, PartialEq)]
 pub enum LetterStatus {
     Correct(char),
-    InDifferentPosition(char),
-    NotInWord(char),
+    Misplaced(char),
+    Incorrect(char),
 }
 
 impl Display for LetterStatus {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let formatted = match &self {
             LetterStatus::Correct(c) => format!(" {} ", c).to_ascii_uppercase().on_green(),
-            LetterStatus::InDifferentPosition(c) => {
-                format!(" {} ", c).to_ascii_uppercase().on_yellow()
-            }
-            LetterStatus::NotInWord(c) => format!(" {} ", c).to_ascii_uppercase().on_bright_black(),
+            LetterStatus::Misplaced(c) => format!(" {} ", c).to_ascii_uppercase().on_yellow(),
+            LetterStatus::Incorrect(c) => format!(" {} ", c).to_ascii_uppercase().on_bright_black(),
         }
         .bright_white()
         .bold();

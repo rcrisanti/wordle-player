@@ -83,7 +83,7 @@ where
                 LetterStatus::Correct(l) => {
                     let _ = std::mem::replace(&mut self.state[i], Some(*l));
                 }
-                LetterStatus::InDifferentPosition(l) => {
+                LetterStatus::Misplaced(l) => {
                     let l_not_pos = self.must_include.get_mut(l);
                     match l_not_pos {
                         Some(idxs) => {
@@ -94,7 +94,7 @@ where
                         }
                     }
                 }
-                LetterStatus::NotInWord(l) => {
+                LetterStatus::Incorrect(l) => {
                     self.off_limit.insert(*l);
                 }
             }

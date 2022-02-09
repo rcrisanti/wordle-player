@@ -5,9 +5,9 @@ use crate::player::strategies;
 fn none_in_word() {
     let mut player = Player::new(3, strategies::random);
     let guess_results = vec![
-        LetterStatus::NotInWord('a'),
-        LetterStatus::NotInWord('b'),
-        LetterStatus::NotInWord('c'),
+        LetterStatus::Incorrect('a'),
+        LetterStatus::Incorrect('b'),
+        LetterStatus::Incorrect('c'),
     ];
     player.update_knowledge(guess_results);
 
@@ -20,9 +20,9 @@ fn none_in_word() {
 fn wrong_order() {
     let mut player = Player::new(3, strategies::random);
     let guess_results = vec![
-        LetterStatus::InDifferentPosition('b'),
-        LetterStatus::InDifferentPosition('a'),
-        LetterStatus::InDifferentPosition('c'),
+        LetterStatus::Misplaced('b'),
+        LetterStatus::Misplaced('a'),
+        LetterStatus::Misplaced('c'),
     ];
     player.update_knowledge(guess_results);
 
@@ -54,8 +54,8 @@ fn mix() {
     let mut player = Player::new(3, strategies::random);
     let guess_results = vec![
         LetterStatus::Correct('c'),
-        LetterStatus::InDifferentPosition('b'),
-        LetterStatus::NotInWord('x'),
+        LetterStatus::Misplaced('b'),
+        LetterStatus::Incorrect('x'),
     ];
     player.update_knowledge(guess_results);
 

@@ -71,12 +71,12 @@ where
                                     .expect("could not find character in answer"),
                             )
                         {
-                            LetterStatus::NotInWord(g)
+                            LetterStatus::Incorrect(g)
                         } else {
-                            LetterStatus::InDifferentPosition(g)
+                            LetterStatus::Misplaced(g)
                         }
                     } else {
-                        LetterStatus::NotInWord(g)
+                        LetterStatus::Incorrect(g)
                     }
                 })
                 .collect::<Vec<_>>(),
