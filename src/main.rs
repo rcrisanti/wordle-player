@@ -35,6 +35,9 @@ struct Args {
         )
     )]
     strategy: String,
+
+    #[clap(short, long, help = "Whether to allow guesses that violate current knowledge state")]
+    easy_mode: bool
 }
 
 fn main() {
@@ -48,6 +51,7 @@ fn main() {
             &"user" => Box::new(UserInputStrategy::new()),
             _ => Box::new(LetterFrequencyStrategy::new()),
         },
+        !args.easy_mode
     );
     let mut puzzle = Puzzle::new(&mut player, &answer, args.n_turns);
     let solved = puzzle.solve();

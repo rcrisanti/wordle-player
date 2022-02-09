@@ -4,7 +4,7 @@ use crate::player::strategies::RandomStrategy;
 #[test]
 fn none_in_word() {
     let strategy = RandomStrategy::new();
-    let mut player = Player::new(3, Box::new(strategy));
+    let mut player = Player::new(3, Box::new(strategy), true);
     let guess_results = vec![
         LetterStatus::Incorrect('a'),
         LetterStatus::Incorrect('b'),
@@ -20,7 +20,7 @@ fn none_in_word() {
 #[test]
 fn wrong_order() {
     let strategy = RandomStrategy::new();
-    let mut player = Player::new(3, Box::new(strategy));
+    let mut player = Player::new(3, Box::new(strategy), true);
     let guess_results = vec![
         LetterStatus::Misplaced('b'),
         LetterStatus::Misplaced('a'),
@@ -39,7 +39,7 @@ fn wrong_order() {
 #[test]
 fn all_correct() {
     let strategy = RandomStrategy::new();
-    let mut player = Player::new(3, Box::new(strategy));
+    let mut player = Player::new(3, Box::new(strategy), true);
     let guess_results = vec![
         LetterStatus::Correct('c'),
         LetterStatus::Correct('a'),
@@ -55,7 +55,7 @@ fn all_correct() {
 #[test]
 fn mix() {
     let strategy = RandomStrategy::new();
-    let mut player = Player::new(3, Box::new(strategy));
+    let mut player = Player::new(3, Box::new(strategy), true);
     let guess_results = vec![
         LetterStatus::Correct('c'),
         LetterStatus::Misplaced('b'),

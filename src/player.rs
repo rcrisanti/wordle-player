@@ -14,20 +14,33 @@ pub struct Player {
     off_limit: HashSet<char>,
     must_include: HashMap<char, Vec<usize>>,
     strategy: Box<dyn Strategy>,
+    update_word_cache: bool,
+    cached_words: Option<HashSet<String>>,
 }
 
 impl Player {
-    pub fn new(word_len: usize, strategy: Box<dyn Strategy>) -> Self {
+    pub fn new(word_len: usize, strategy: Box<dyn Strategy>, update_word_cache: bool) -> Self {
         Player {
             state: vec![None; word_len],
             off_limit: HashSet::new(),
             must_include: HashMap::new(),
             strategy,
+            update_word_cache,
+            cached_words: None,
         }
     }
 
     pub fn guess(&mut self) -> Result<String, ImpossiblePuzzleError> {
-        let words = word_options(&self.state, &self.off_limit, &self.must_include);
+        let words = word_options(
+            &self.cached_words,
+            &self.state,
+            &self.off_limit,
+            &self.must_include,
+        );
+
+        if self.update_word_cache || self.cached_words.is_none() {
+            self.cached_words = Some(words.clone());
+        }
 
         match words.len() {
             0 => Err(ImpossiblePuzzleError {}),
@@ -61,26 +74,39 @@ impl Player {
 }
 
 fn word_options(
+    cached_words: &Option<HashSet<String>>,
     state: &Vec<Option<char>>,
     off_limit: &HashSet<char>,
     must_include: &HashMap<char, Vec<usize>>,
 ) -> HashSet<String> {
-    // for now using a static file (read this way so that file is included in compiled executable)
-    let words_bytes = include_bytes!("../word-database.txt");
-    let file = String::from_utf8_lossy(words_bytes);
-    let lines = file.split("\n").map(|w| w.to_string());
-
     let regex_query = build_regex_query(state, off_limit, must_include);
     let re = Regex::new(&regex_query).expect("regex expression failed to compile");
 
-    lines
-        .filter_map(|word| {
-            if re.is_match(&word).unwrap() {
-                return Some(word);
-            }
-            None
-        })
-        .collect::<HashSet<_>>()
+    match cached_words {
+        Some(words) => words
+            .iter()
+            .filter_map(|word| {
+                if re.is_match(word).unwrap() {
+                    return Some(word.to_owned());
+                }
+                None
+            })
+            .collect::<HashSet<_>>(),
+        None => {
+            let words_bytes = include_bytes!("../word-database.txt");
+            let file = String::from_utf8_lossy(words_bytes);
+            let lines = file.split("\n").map(|w| w.to_string());
+
+            lines
+                .filter_map(|word| {
+                    if re.is_match(&word).unwrap() {
+                        return Some(word.to_owned());
+                    }
+                    None
+                })
+                .collect::<HashSet<_>>()
+        }
+    }
 }
 
 fn build_regex_query(

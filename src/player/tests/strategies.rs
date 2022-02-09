@@ -45,7 +45,8 @@ fn heuristic_better_than_random() {
         words
             .iter()
             .map(|answer| {
-                let mut random_player = Player::new(word_length, Box::new(RandomStrategy::new()));
+                let mut random_player =
+                    Player::new(word_length, Box::new(RandomStrategy::new()), true);
                 let mut puzzle = Puzzle::new(&mut random_player, &answer, max_n_turns);
                 let solved = puzzle.solve();
                 match solved {
@@ -67,7 +68,7 @@ fn heuristic_better_than_random() {
             .iter()
             .map(|answer| {
                 let mut heuristic_player =
-                    Player::new(word_length, Box::new(LetterFrequencyStrategy::new()));
+                    Player::new(word_length, Box::new(LetterFrequencyStrategy::new()), true);
                 let mut puzzle = Puzzle::new(&mut heuristic_player, &answer, max_n_turns);
                 let solved = puzzle.solve();
                 match solved {
