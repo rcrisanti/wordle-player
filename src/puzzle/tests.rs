@@ -26,12 +26,15 @@ fn out_of_turns_loses() {
     let mut player = Player::new(4, Box::new(UserInputStrategy::new()));
     let mut puzzle = Puzzle::new(&mut player, "easy", 1);
 
-    let expected_result = GuessResult::Loss(IntermediateLetterInfo(vec![
-        LetterStatus::Incorrect('h'),
-        LetterStatus::Correct('a'),
-        LetterStatus::Incorrect('r'),
-        LetterStatus::Incorrect('d'),
-    ]));
+    let expected_result = GuessResult::Loss(
+        IntermediateLetterInfo(vec![
+            LetterStatus::Incorrect('h'),
+            LetterStatus::Correct('a'),
+            LetterStatus::Incorrect('r'),
+            LetterStatus::Incorrect('d'),
+        ]),
+        puzzle.answer.to_string(),
+    );
 
     assert_eq!(puzzle.turn("hard".to_string()), expected_result);
 }

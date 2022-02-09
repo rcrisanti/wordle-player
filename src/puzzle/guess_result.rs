@@ -20,16 +20,21 @@ impl Display for IntermediateLetterInfo {
 #[derive(PartialEq, Debug)]
 pub enum GuessResult {
     Win(IntermediateLetterInfo, u8),
-    Loss(IntermediateLetterInfo),
+    Loss(IntermediateLetterInfo, String),
     Continue(IntermediateLetterInfo),
 }
 
 impl Display for GuessResult {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self {
-            Self::Win(status, _) => write!(f, "{}\n\tWin! :)", status),
-            Self::Loss(status) => write!(f, "{}\n\tLoss :(", status),
-            Self::Continue(status) => write!(f, "{}", status),
+            Self::Win(status, turns) => {
+                write!(f, "{status}\nCongrats! You won in {turns} turns :)")
+            }
+            Self::Loss(status, answer) => write!(
+                f,
+                "{status}\nSo close! You couldn't quite guess \"{answer}\" :("
+            ),
+            Self::Continue(status) => write!(f, "{status}"),
         }
     }
 }

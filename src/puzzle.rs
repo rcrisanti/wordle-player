@@ -29,9 +29,8 @@ impl<'a> Puzzle<'a> {
         loop {
             let guess = self.player.guess()?;
 
-            println!("Turn {}: guess '{}'", self.completed_turns + 1, guess);
             let turn_res = self.turn(guess);
-            println!("\t{}", turn_res);
+            println!("{}", turn_res);
             if let GuessResult::Continue(new_info) = turn_res {
                 self.player.update_knowledge(new_info.0);
             } else {
@@ -77,7 +76,7 @@ impl<'a> Puzzle<'a> {
         if word.to_ascii_lowercase() == self.answer.to_ascii_lowercase() {
             GuessResult::Win(letter_status, self.completed_turns)
         } else if self.completed_turns >= self.n_turns {
-            GuessResult::Loss(letter_status)
+            GuessResult::Loss(letter_status, self.answer.to_string())
         } else {
             GuessResult::Continue(letter_status)
         }
