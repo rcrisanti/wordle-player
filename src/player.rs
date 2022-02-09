@@ -14,8 +14,6 @@ pub struct Player {
     off_limit: HashSet<char>,
     must_include: HashMap<char, Vec<usize>>,
     strategy: Box<dyn Strategy>,
-    n_turns: Option<u8>,
-    completed_turns: u8,
 }
 
 impl Player {
@@ -25,24 +23,16 @@ impl Player {
             off_limit: HashSet::new(),
             must_include: HashMap::new(),
             strategy,
-            n_turns: None,
-            completed_turns: 0,
         }
     }
 
     pub fn guess(&mut self) -> Result<String, ImpossiblePuzzleError> {
-        self.completed_turns += 1;
-
         let words = word_options(&self.state, &self.off_limit, &self.must_include);
 
         match words.len() {
             0 => Err(ImpossiblePuzzleError {}),
             _ => Ok(self.strategy.best_word(&words, &self.state)),
         }
-    }
-
-    pub fn set_puzzle_rules(&mut self, n_turns: u8) {
-        self.n_turns = Some(n_turns);
     }
 
     pub fn update_knowledge(&mut self, guess_results: Vec<LetterStatus>) {

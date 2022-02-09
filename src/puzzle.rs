@@ -16,7 +16,6 @@ pub struct Puzzle<'a> {
 
 impl<'a> Puzzle<'a> {
     pub fn new(player: &'a mut Player, answer: &'a str, n_turns: u8) -> Self {
-        player.set_puzzle_rules(n_turns);
         Puzzle {
             player,
             answer,
