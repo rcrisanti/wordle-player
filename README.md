@@ -41,3 +41,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-07 | elder | :white_check_mark: |   5   |   0.1   |
 | 2022-02-08 | frame |         :x:        |   -   |   0.1   |
 | 2022-02-09 | humor | :white_check_mark: |   4   |   0.1   |
+| 2022-02-10 | pause | :white_check_mark: |   4   |   0.1   |
