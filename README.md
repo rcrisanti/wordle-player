@@ -46,3 +46,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-12 | ultra | :white_check_mark: |   4   |   0.1   |
 | 2022-02-13 | robin | :white_check_mark: |   3   |   0.1   |
 | 2022-02-14 | cynic | :white_check_mark: |   5   |   0.1   |
+| 2022-02-15 | aroma | :white_check_mark: |   6   |   0.1   |
