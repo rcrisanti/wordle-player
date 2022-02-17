@@ -48,3 +48,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-14 | cynic | :white_check_mark: |   5   |
 | 2022-02-15 | aroma | :white_check_mark: |   6   |
 | 2022-02-16 | caulk | :white_check_mark: |   4   |
+| 2022-02-17 | shake |         :x:        |   -   |
