@@ -51,3 +51,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-17 | shake |         :x:        |   -   |
 | 2022-02-18 | dodge | :white_check_mark: |   4   |
 | 2022-02-19 | swill | :white_check_mark: |   6   |
+| 2022-02-20 | tacit | :white_check_mark: |   6   |
