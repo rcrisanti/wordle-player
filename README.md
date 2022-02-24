@@ -55,3 +55,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-21 | other | :white_check_mark: |   3   |
 | 2022-02-22 | thorn | :white_check_mark: |   3   |
 | 2022-02-23 | trove |         :x:        |   -   |
+| 2022-02-24 | bloke | :white_check_mark: |   5   |
