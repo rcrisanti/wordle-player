@@ -58,3 +58,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-24 | bloke | :white_check_mark: |   5   |
 | 2022-02-25 | vivid | :white_check_mark: |   5   |
 | 2022-02-26 | spill | :white_check_mark: |   6   |
+| 2022-02-27 | chant | :white_check_mark: |   4   |
