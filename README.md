@@ -61,3 +61,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-02-27 | chant | :white_check_mark: |   4   |
 | 2022-02-28 | choke | :white_check_mark: |   3   |
 | 2022-03-01 | rupee | :white_check_mark: |   5   |
+| 2022-03-02 | nasty | :white_check_mark: |   3   |
