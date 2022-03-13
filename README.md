@@ -72,3 +72,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-03-10 | lapse | :white_check_mark: |   4   |
 | 2022-03-11 | watch |         :x:        |   -   |
 | 2022-03-12 | today | :white_check_mark: |   5   |
+| 2022-03-13 | focus | :white_check_mark: |   5   |
