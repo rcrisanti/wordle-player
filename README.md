@@ -75,3 +75,4 @@ I'll keep track of the stats for how well it performs on the daily official Word
 | 2022-03-13 | focus | :white_check_mark: |   5   |
 | 2022-03-14 | smelt | :white_check_mark: |   4   |
 | 2022-03-15 | tease | :white_check_mark: |   5   |
+| 2022-03-16 | cater | :white_check_mark: |   4   |
